@@ -116,7 +116,6 @@
           </div>
           <div class="lab-footer">
             <span>回放固定版本公开实现的字符串匹配分支。回答由示例构造，组内优势按这四条回答计算。</span>
-            <a class="text-link" data-source="reward" href="https://github.com/Yuxiang-Lai117/Med-R1" target="_blank" rel="noopener">查看奖励代码 ↗</a>
           </div>
         </div>
       </div>
@@ -127,7 +126,7 @@
         <div class="section-heading">
           <p class="eyebrow">跨任务评估</p>
           <h2 id="evaluation-title">换个任务，提升还在吗？</h2>
-          <p>在一种任务上训练，在另一种任务上测试。点击矩阵中的一格查看这一方向的变化。右侧宏平均给每个组合相同权重，数据来自原论文的 Qwen2.5-VL-3B 实验。</p>
+          <p>在一种任务上训练，在另一种任务上测试。点击矩阵中的一格查看这一方向的变化。右侧宏平均给每个组合相同权重，基于 Qwen2.5-VL-3B 实验。</p>
         </div>
         <div class="evaluation-controls">
           <div class="segmented" role="group" aria-label="比较策略">
@@ -144,7 +143,6 @@
             <div class="matrix-meta"><span>行是训练任务，列是测试任务</span><span>准确率差值 · 百分点</span></div>
             <div id="matrix"></div>
             <div class="matrix-legend"><span><i class="legend-gain"></i>提升</span><span><i class="legend-loss"></i>下降</span><span><i class="legend-excluded"></i>未纳入均值</span></div>
-            <p class="matrix-source">数据来源 <a data-source="paper" href="https://arxiv.org/html/2503.13939v5#S4" target="_blank" rel="noopener">论文跨任务实验表 ↗</a></p>
           </div>
           <div class="evaluation-detail">
             <div class="mean-card" aria-live="polite" aria-atomic="true">
@@ -185,7 +183,6 @@
           <article>
             <h3>检查训练与测试的图像路径</h3>
             <p>疾病诊断训练集与解剖识别测试集有 <strong>254 个共同图像路径</strong>，涉及 256 条测试问答。这个检查覆盖路径层面的重叠。患者级独立性需要额外核验患者 ID。</p>
-            <a class="text-link" data-source="splits" href="https://github.com/Yuxiang-Lai117/Med-R1/tree/main/Splits" target="_blank" rel="noopener">查看公开数据划分 ↗</a>
           </article>
         </div>
         <p class="scope">影像题和候选回答是演示样例。奖励回放依据公开实现，准确率矩阵为论文实验数据。</p>
