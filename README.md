@@ -1,6 +1,6 @@
 # 医学影像问答
 
-[在线演示](https://medical-image-qa-lab.icy-owl-2889.chatgpt.site/)
+[在线演示](https://hhh21hhh.github.io/medical-image-qa-lab/)
 
 这个交互展示覆盖影像问答、规则奖励和跨任务评估。选一道影像题后，奖励实验会切换到同一道题的标准答案。可以选择格式示例，也可以直接编辑第一条回答，比较答案奖励、格式奖励与四条回答的组内优势。
 
