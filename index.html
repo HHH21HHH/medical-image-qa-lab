@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="探索多种医学影像问答，动手测试 GRPO 格式奖励，再用交互矩阵查看跨任务评估。">
+  <meta property="og:title" content="医学影像问答｜奖励与跨任务评估">
+  <meta property="og:description" content="切换影像问题，改写候选回答，再用交互矩阵查看模型在不同任务之间的表现。">
+  <meta property="og:type" content="website">
+  <meta name="theme-color" content="#101820">
+  <title>医学影像问答｜奖励与跨任务评估</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="data.js" defer></script>
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">跳到正文</a>
+  <header class="masthead">
+    <div class="shell header-inner">
+      <a class="wordmark" href="#main"><span class="brand-mark" aria-hidden="true"></span>影像问答</a>
+      <nav aria-label="页面导航">
+        <a href="#case">影像问答</a>
+        <a href="#reward">奖励实验</a>
+        <a href="#evaluation">跨任务评估</a>
+        <a href="#work">项目工作</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="shell hero-grid">
+        <div class="hero-copy">
+          <p class="eyebrow"><span class="status-dot" aria-hidden="true"></span>医学多模态 · 工程验证</p>
+          <h1 id="hero-title">医学视觉问答<br>的奖励与泛化</h1>
+          <p class="hero-lede">从识别影像到定位解剖结构，选一道题试试看。再改写一条候选回答，观察评分规则和 GRPO 组内优势，最后用热图探索跨任务结果。</p>
+          <div class="hero-actions">
+            <a class="button button-primary" href="#case">从一道题开始 <span aria-hidden="true">↓</span></a>
+            <a class="button button-secondary" href="#evaluation">直接看评估 <span aria-hidden="true">↗</span></a>
+          </div>
+        </div>
+        <figure class="scan">
+          <div class="scan-view">
+            <div class="scan-frame" aria-hidden="true"></div>
+            <p class="scan-label">HEAD <span>/</span> AXIAL</p>
+            <img src="assets/head-axial.png" alt="一张轴位头部影像" width="646" height="468" fetchpriority="high">
+            <span class="scan-position" aria-hidden="true">26 / 轴位切片</span>
+          </div>
+          <figcaption><span>头部影像 · 公开教学样例</span><a href="https://commons.wikimedia.org/wiki/File:CT_of_a_normal_brain,_axial_26.png" target="_blank" rel="noopener">Mikael Häggström · CC0 ↗</a></figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="section section-light" id="case" aria-labelledby="case-title">
+      <div class="shell split">
+        <div class="section-copy">
+          <p class="eyebrow">医学视觉问答</p>
+          <h2 id="case-title">选择一道影像题</h2>
+          <p>切换问题，看看哪些线索来自图像。这里选中的题目也会用于下方的奖励实验。</p>
+          <div class="case-picker" id="case-picker" role="group" aria-label="选择影像题"></div>
+        </div>
+        <div class="quiz">
+          <figure class="quiz-figure">
+            <img id="quiz-image" class="quiz-scan" src="assets/head-axial.png" alt="本题使用的头部影像" width="646" height="468">
+            <figcaption><a id="quiz-image-credit" href="https://commons.wikimedia.org/wiki/File:CT_of_a_normal_brain,_axial_26.png" target="_blank" rel="noopener">Mikael Häggström · CC0 ↗</a></figcaption>
+          </figure>
+          <div class="quiz-body">
+            <h3 id="quiz-question">这张图像来自哪种检查？</h3>
+            <div class="choices" role="group" aria-label="选择答案">
+              <button type="button" class="choice" data-choice="A"><span class="choice-letter">A</span><span class="choice-label">CT</span></button>
+              <button type="button" class="choice" data-choice="B"><span class="choice-letter">B</span><span class="choice-label">MRI</span></button>
+              <button type="button" class="choice" data-choice="C"><span class="choice-letter">C</span><span class="choice-label">X 光投影</span></button>
+              <button type="button" class="choice" data-choice="D"><span class="choice-letter">D</span><span class="choice-label">超声</span></button>
+            </div>
+            <p id="quiz-feedback" class="quiz-feedback" role="status">选择一个选项查看答案与图像线索。</p>
+            <a class="text-link" href="#reward">看不同写法如何得分 <span aria-hidden="true">↓</span></a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-light reward-section" id="reward" aria-labelledby="reward-title">
+      <div class="shell">
+        <div class="section-heading">
+          <p class="eyebrow">GRPO 奖励实验</p>
+          <h2 id="reward-title">回答写法如何影响奖励</h2>
+          <p>GRPO 比较同一题的一组回答。试试只写答案、少一个标签或在末尾加换行，观察答案奖励、格式奖励和组内优势分别怎么变。</p>
+        </div>
+        <div class="lab">
+          <div class="lab-header">
+            <h3>规则奖励回放</h3>
+            <span id="lab-context">No-Think · 构造回答</span>
+          </div>
+          <div class="lab-body">
+            <div class="candidate-list">
+              <div id="candidates" role="group" aria-label="查看候选回答"></div>
+              <div class="answer-editor">
+                <label for="answer-preset">回答 1 的格式示例</label>
+                <select id="answer-preset"></select>
+                <label for="answer-input">编辑回答 1</label>
+                <textarea id="answer-input" rows="3" spellcheck="false" autocapitalize="off" autocomplete="off"></textarea>
+                <span id="preset-note" class="detail-note"></span>
+              </div>
+            </div>
+            <div class="candidate-detail" aria-live="polite" aria-atomic="true">
+              <p class="field-label">回答原文 · ↵ 表示换行</p>
+              <pre id="candidate-text"></pre>
+              <p id="candidate-extracted" class="extracted"></p>
+              <dl class="reward-terms">
+                <div><dt>答案奖励</dt><dd id="accuracy-reward"></dd></div>
+                <div><dt>格式奖励</dt><dd id="format-reward"></dd></div>
+                <div><dt>组内优势</dt><dd id="candidate-advantage"></dd></div>
+              </dl>
+              <p class="detail-note" id="reward-note"></p>
+            </div>
+          </div>
+          <div class="lab-footer">
+            <span>回放固定版本公开实现的字符串匹配分支。回答由示例构造，组内优势按这四条回答计算。</span>
+            <a class="text-link" data-source="reward" href="https://github.com/Yuxiang-Lai117/Med-R1" target="_blank" rel="noopener">查看奖励代码 ↗</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section evaluation" id="evaluation" aria-labelledby="evaluation-title">
+      <div class="shell">
+        <div class="section-heading">
+          <p class="eyebrow">跨任务评估</p>
+          <h2 id="evaluation-title">换个任务，提升还在吗？</h2>
+          <p>在一种任务上训练，在另一种任务上测试。点击矩阵中的一格查看这一方向的变化。右侧宏平均给每个组合相同权重，数据来自原论文的 Qwen2.5-VL-3B 实验。</p>
+        </div>
+        <div class="evaluation-controls">
+          <div class="segmented" role="group" aria-label="比较策略">
+            <button type="button" data-strategy="noThink" aria-pressed="true">No-Think vs Think</button>
+            <button type="button" data-strategy="thinkAfter" aria-pressed="false">Think-After vs Think</button>
+          </div>
+          <label class="toggle">
+            <input type="checkbox" id="cross-only" checked>
+            <span>只统计不同任务的组合</span>
+          </label>
+        </div>
+        <div class="evaluation-grid">
+          <div class="matrix-panel">
+            <div class="matrix-meta"><span>行是训练任务，列是测试任务</span><span>准确率差值 · 百分点</span></div>
+            <div id="matrix"></div>
+            <div class="matrix-legend"><span><i class="legend-gain"></i>提升</span><span><i class="legend-loss"></i>下降</span><span><i class="legend-excluded"></i>未纳入均值</span></div>
+            <p class="matrix-source">数据来源 <a data-source="paper" href="https://arxiv.org/html/2503.13939v5#S4" target="_blank" rel="noopener">论文跨任务实验表 ↗</a></p>
+          </div>
+          <div class="evaluation-detail">
+            <div class="mean-card" aria-live="polite" aria-atomic="true">
+              <p class="field-label" id="mean-label">20 个跨任务组合的宏平均</p>
+              <div class="mean-values" id="mean-values"></div>
+              <p class="mean-change" id="mean-change"></p>
+            </div>
+            <div class="route-card">
+              <div aria-live="polite" aria-atomic="true">
+                <p class="field-label">当前选中的迁移方向</p>
+                <h3 id="route-title"></h3>
+                <p id="route-values" class="route-values"></p>
+              </div>
+              <button class="text-link reverse-link" type="button" id="reverse-route">查看反向迁移 <span aria-hidden="true">⇄</span></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-light work-section" id="work" aria-labelledby="work-title">
+      <div class="shell">
+        <div class="section-heading">
+          <p class="eyebrow">项目工作</p>
+          <h2 id="work-title">我做了哪些验证</h2>
+        </div>
+        <div class="work-list">
+          <article>
+            <h3>跑通规则奖励的离线测试</h3>
+            <p>抽出公开代码里的奖励函数，构造答对、答错和格式异常的回答，检查两项奖励如何变化。字符串匹配实验绕开了符号验证分支。</p>
+            <a class="text-link" data-source="code" href="https://github.com/Yuxiang-Lai117/Med-R1" target="_blank" rel="noopener">查看核对的代码版本 ↗</a>
+          </article>
+          <article>
+            <h3>重算论文跨任务矩阵</h3>
+            <p>从论文转录 Think、No-Think、Think-After 的准确率矩阵，分别核算全部组合和非对角组合的宏平均，并查看单个迁移方向的变化。</p>
+            <a class="text-link" data-source="paper" href="https://arxiv.org/html/2503.13939v5" target="_blank" rel="noopener">查看论文中的实验表 ↗</a>
+          </article>
+          <article>
+            <h3>检查训练与测试的图像路径</h3>
+            <p>疾病诊断训练集与解剖识别测试集有 <strong>254 个共同图像路径</strong>，涉及 256 条测试问答。这个检查覆盖路径层面的重叠。患者级独立性需要额外核验患者 ID。</p>
+            <a class="text-link" data-source="splits" href="https://github.com/Yuxiang-Lai117/Med-R1/tree/main/Splits" target="_blank" rel="noopener">查看公开数据划分 ↗</a>
+          </article>
+        </div>
+        <p class="scope">影像题和候选回答是演示样例。奖励回放依据公开实现，准确率矩阵为论文实验数据。</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="shell footer-inner"><span>医学影像问答 · 工程验证与评测</span><a href="#main">返回顶部 ↑</a></div>
+  </footer>
+</body>
+</html>

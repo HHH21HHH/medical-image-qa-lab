@@ -1,2 +1,28 @@
-# medical-image-qa-lab
-医学影像问答交互展示，包含影像题、GRPO 奖励实验和跨任务热图。
+# 医学影像问答
+
+[在线演示](https://medical-image-qa-lab.icy-owl-2889.chatgpt.site/)
+
+这个交互展示覆盖影像问答、规则奖励和跨任务评估。选一道影像题后，奖励实验会切换到同一道题的标准答案。可以选择格式示例，也可以直接编辑第一条回答，比较答案奖励、格式奖励与四条回答的组内优势。
+
+## 本地打开
+
+用浏览器打开 `index.html`，也可以在本目录运行下面的命令。
+
+```sh
+python3 -m http.server 8000 --bind 127.0.0.1
+```
+
+然后访问 [本地页面](http://127.0.0.1:8000/)。网页使用同目录下的静态 HTML、CSS、JavaScript 和图片。直接部署这个目录即可托管。
+
+## 文件
+
+- `index.html` 和 `style.css` 定义页面结构与样式。
+- `data.js` 包含四道教学题、三种策略的跨任务准确率矩阵和出处。
+- `script.js` 实现答题切换、字符串匹配奖励、组内优势和热图。
+- `assets/` 存放公开教学影像。
+
+## 数据和方法出处
+
+- 影像题与候选回答是教学样例。头部 CT 与气胸教学胸片来自 Mikael Häggström，使用 CC0。气胸图已缩放。正位胸片来自 CDC / Phyllis Q. Edwards，属于公有领域。 [头部 CT](https://commons.wikimedia.org/wiki/File:CT_of_a_normal_brain,_axial_26.png) · [气胸胸片](https://commons.wikimedia.org/wiki/File:Expired_X-ray_of_pneumothorax.jpg) · [CDC 正位胸片](https://wwwn.cdc.gov/phil/Details.aspx?pid=20122)
+- 奖励实验回放固定版本公开实现的字符串匹配分支，组内优势按四条候选回答的总分计算。 [奖励规则](https://github.com/Yuxiang-Lai117/Med-R1/blob/88d76c73e7d21cd958a2b2dc32eca038be766f8f/src/r1-v/src/open_r1/grpo_vqa_nothink.py#L53-L103) · [组内优势](https://github.com/Yuxiang-Lai117/Med-R1/blob/88d76c73e7d21cd958a2b2dc32eca038be766f8f/src/r1-v/src/open_r1/trainer/grpo_trainer.py#L456-L465)
+- 跨任务准确率来自论文的 Qwen2.5-VL-3B 实验。热图展示策略间的差值，宏平均对选中的训练与测试组合等权计算。 [论文实验表](https://arxiv.org/html/2503.13939v5#S4)
